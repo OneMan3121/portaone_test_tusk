@@ -47,13 +47,8 @@ public class Main {
 
         long end = System.currentTimeMillis();
         System.out.println("\nSpend time: " + (end - start) / 1000);
-
-
-
     }
-
-
-
+    
     /**
      * @param list expects a list of implemented Number.
      * @return  returns the type Double.
