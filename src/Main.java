@@ -14,65 +14,26 @@ public class Main {
         try {
             filePath = args[0];
         } catch (ArrayIndexOutOfBoundsException e ) {
-            throw new ArrayIndexOutOfBoundsException("Enter file path in args");
+            throw new ArrayIndexOutOfBoundsException("Enter file path in first args");
         }
-
 
         List<Integer> numbers = Files.lines(Path.of(filePath))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
-        // Max Increasing
-        List<Integer> currentIncreasingSequence = new ArrayList<>();
-        List<Integer> longestIncreasingSequence = new ArrayList<>();
-        // Min Decreasing
-        List<Integer> currentDecreasingSequence = new ArrayList<>();
-        List<Integer> longestDecreasingSequence = new ArrayList<>();
 
+        List<Integer> longestIncreasingSequence = getIncreasingSequence(numbers);
+        List<Integer> longestDecreasingSequence = getDecreasingSequence(numbers);
 
-        for (Integer number : numbers) {
-            if (currentIncreasingSequence.isEmpty() || number > currentIncreasingSequence.get(currentIncreasingSequence.size() - 1)) {
-                currentIncreasingSequence.add(number);
-            } else {
-                currentIncreasingSequence = new ArrayList<>();
-                currentIncreasingSequence.add(number);
-            }
-            if (currentDecreasingSequence.isEmpty() || number < currentDecreasingSequence.get(currentDecreasingSequence.size() - 1)) {
-                currentDecreasingSequence.add(number);
-            } else {
-                currentDecreasingSequence = new ArrayList<>();
-                currentDecreasingSequence.add(number);
-            }
-
-            if( currentDecreasingSequence.size() > longestDecreasingSequence.size()) {
-                longestDecreasingSequence = new ArrayList<>(currentDecreasingSequence);
-            }
-            if (currentIncreasingSequence.size() > longestIncreasingSequence.size()) {
-                longestIncreasingSequence = new ArrayList<>(currentIncreasingSequence);
-            }
-        }
-
-        BigInteger sum = numbers.stream().map(BigInteger::valueOf).reduce(BigInteger.ZERO, BigInteger::add);
-        BigInteger avarageNumber = sum.divide(BigInteger.valueOf(numbers.size()));
-
+        BigInteger sumOfNumbers = numbers.stream().map(BigInteger::valueOf).reduce(BigInteger.ZERO, BigInteger::add);
+        BigInteger avarageNumber = sumOfNumbers.divide(BigInteger.valueOf(numbers.size()));
 
         numbers.sort(Integer::compareTo);
-
-//        numbers.stream().toList().forEach(System.out::println);
 
         int minNumber = numbers.get(0);
         int maxNumber = numbers.get(numbers.size()-1);
 
-
-
-
-
-
-
-        double median = getMedianFromListInt(numbers);
-
-
-
+        double median = getMedianFromList(numbers);
 
 
 
@@ -98,7 +59,7 @@ public class Main {
      * @param list expects a list of implemented Number.
      * @return  returns the type Double.
      */
-    public static Double getMedianFromListInt(List<? extends Number> list) {
+    public static Double getMedianFromList(List<? extends Number> list) {
         int size = list.size();
         if (size % 2 == 0) {
 
@@ -110,9 +71,52 @@ public class Main {
 
     }
 
+    /**
+     * @param list accepts unsorted List.
+     * @return  the largest Increasing subList.
+     */
+    public static List<Integer> getIncreasingSequence(List<Integer> list ) {
+        List<Integer> currentIncreasingSequence = new ArrayList<>();
+        List<Integer> longestIncreasingSequence = new ArrayList<>();
+
+        for (Integer number : list) {
+            if (currentIncreasingSequence.isEmpty() || number > currentIncreasingSequence.get(currentIncreasingSequence.size() - 1)) {
+                currentIncreasingSequence.add(number);
+            } else {
+                currentIncreasingSequence = new ArrayList<>();
+                currentIncreasingSequence.add(number);
+            }
+            if (currentIncreasingSequence.size() > longestIncreasingSequence.size()) {
+                longestIncreasingSequence = new ArrayList<>(currentIncreasingSequence);
+            }
+        }
+        return longestIncreasingSequence;
+    }
+
+    /**
+     * @param list accepts unsorted List.
+     * @return  the largest Decreasing subList.
+     */
+    public static List<Integer> getDecreasingSequence(List<Integer> list ) {
+        List<Integer> currentDecreasingSequence = new ArrayList<>();
+        List<Integer> longestDecreasingSequence = new ArrayList<>();
 
 
+        for (Integer number : list) {
 
+            if (currentDecreasingSequence.isEmpty() || number < currentDecreasingSequence.get(currentDecreasingSequence.size() - 1)) {
+                currentDecreasingSequence.add(number);
+            } else {
+                currentDecreasingSequence = new ArrayList<>();
+                currentDecreasingSequence.add(number);
+            }
+            if( currentDecreasingSequence.size() > longestDecreasingSequence.size()) {
+                longestDecreasingSequence = new ArrayList<>(currentDecreasingSequence);
+            }
+
+        }
+        return longestDecreasingSequence;
+    }
 
 
 
