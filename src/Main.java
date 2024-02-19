@@ -2,8 +2,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -33,7 +32,7 @@ public class Main {
         int minNumber = numbers.get(0);
         int maxNumber = numbers.get(numbers.size()-1);
 
-        double median = getMedianFromList(numbers);
+        double median = getMedianFromList(numbers, true);
 
 
 
@@ -59,7 +58,8 @@ public class Main {
      * @param list expects a list of implemented Number.
      * @return  returns the type Double.
      */
-    public static Double getMedianFromList(List<? extends Number> list) {
+    public static Double getMedianFromList(List<? extends Number> list, boolean isListSorted) {
+        if(!isListSorted)   list.sort(Comparator.comparingDouble((Number num) -> num.doubleValue()));
         int size = list.size();
         if (size % 2 == 0) {
 
